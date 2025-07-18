@@ -577,6 +577,75 @@ void SV_Map_f (void)
 }
 
 /*
+==================
+SV_MapList_f
+
+Print maps matching keyname or all of them.
+==================
+*/
+void SV_MapList_f (void)
+{
+	int			ndirs = 0;
+	char		map[1024];
+	char		*arg;
+	char		*path = NULL;
+	char		**dirnames;
+	int			i;
+	qboolean	listall;
+
+	extern char **FS_ListFiles( char *, int *, unsigned, unsigned );
+
+	if (Cmd_Argc() != 2)
+	{
+		Com_Printf ("Usage: maps <substring>\n maps * to list all maps\n");
+		return;
+	}
+
+	arg = Cmd_Argv(1);
+	
+	do 
+	{
+		path = FS_NextPath( path );
+		Com_sprintf( map, sizeof(map), "%s/maps/*.bsp", path );
+
+		if ( ( dirnames = FS_ListFiles( map, &ndirs, 0, 0 ) ) != 0 )
+			break;
+	} while ( path );
+
+	Com_Printf( "----\n" );
+
+	if ( !dirnames )
+	{
+		return;
+	}
+
+	if (!strcmp(arg, "*"))
+		listall = true;
+	else
+		listall = false;
+
+	for ( i = 0; i < ndirs - 1; i++ )
+	{
+		if ( !listall )
+		{
+			char buffer1[1024], buffer2[1024];
+
+			Com_sprintf (buffer1, sizeof(buffer1), "%s", strrchr( dirnames[i], '/' ) + 1);
+
+			strncpy(buffer2, buffer1, strlen(arg));
+
+			if (!strcmp(buffer2, arg))
+			{
+				Com_Printf("%s\n", buffer1);
+			}
+		}
+		else Com_Printf("%s\n", strrchr( dirnames[i], '/' ) + 1);
+	}
+
+	free( dirnames );
+}
+
+/*
 =====================================================================
 
   SAVEGAMES
@@ -1046,5 +1115,6 @@ void SV_InitOperatorCommands (void)
 	Cmd_AddCommand ("killserver", SV_KillServer_f);
 
 	Cmd_AddCommand ("sv", SV_ServerCommand_f);
+	Cmd_AddCommand ("maps", SV_MapList_f);
 }
 
