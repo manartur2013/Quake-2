@@ -220,6 +220,7 @@ void VID_MenuInit( void )
 		"[1152 864 ]",
 		"[1280 960 ]",
 		"[1600 1200]",
+		"[1920 1080]",
 		0
 	};
 	static const char *refs[] =
