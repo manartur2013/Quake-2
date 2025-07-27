@@ -14,3 +14,9 @@
 *.bsc
 *.opt
 /release/baseq2
+/.vs
+*.tlog
+*.user
+*.recipe
+*.ilk
+*.log
