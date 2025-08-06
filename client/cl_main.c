@@ -628,6 +628,8 @@ void CL_Disconnect (void)
 			Com_Printf ("%i frames, %3.1f seconds: %3.1f fps\n", cl.timedemo_frames,
 			time/1000.0, cl.timedemo_frames*1000.0 / time);
 	}
+	
+	S_StopTrack();
 
 	VectorClear (cl.refdef.blend);
 	re.CinematicSetPalette(NULL);
@@ -1736,8 +1738,8 @@ void CL_Frame (int msec)
 
 	// update audio
 	S_Update (cl.refdef.vieworg, cl.v_forward, cl.v_right, cl.v_up);
-	
-	CDAudio_Update();
+
+	QAL_Update();
 
 	// advance local effects for next frame
 	CL_RunDLights ();
@@ -1803,9 +1805,12 @@ void CL_Init (void)
 	SCR_Init ();
 	cls.disable_screen = true;	// don't draw yet
 
-	CDAudio_Init ();
+	QAL_Init ();
 	CL_InitLocal ();
 	IN_Init ();
+
+	if (qal_state.qal_init)
+		Cmd_AddCommand("cd", PlayTrack_f);
 
 //	Cbuf_AddText ("exec autoexec.cfg\n");
 	FS_ExecAutoexec ();
@@ -1835,7 +1840,7 @@ void CL_Shutdown(void)
 
 	CL_WriteConfiguration (); 
 
-	CDAudio_Shutdown ();
+	QAL_Shutdown();
 	S_Shutdown();
 	IN_Shutdown ();
 	VID_Shutdown();

@@ -40,6 +40,11 @@ void S_EndRegistration (void);
 
 struct sfx_s *S_FindName (char *name, qboolean create);
 
+// TEMP function to test music logic
+void S_PlayTrack (int track, qboolean looping);
+void S_StopTrack(void);
+void PlayTrack_f (void);
+
 // the sound code makes callbacks to the client for entitiy position
 // information, so entities can be dynamically re-spatialized
 void CL_GetEntitySoundOrigin (int ent, vec3_t org);
