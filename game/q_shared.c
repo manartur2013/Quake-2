@@ -261,7 +261,9 @@ float Q_fabs (float f)
 #endif
 }
 
-#if defined _M_IX86 && !defined C_ONLY
+#if !defined C_ONLY
+
+#if defined _M_IX86
 #pragma warning (disable:4035)
 __declspec( naked ) long Q_ftol( float f )
 {
@@ -272,6 +274,17 @@ __declspec( naked ) long Q_ftol( float f )
 	__asm ret
 }
 #pragma warning (default:4035)
+#elif defined _M_X64
+long Q_ftol(float f)
+{
+	static int tmp;
+	
+	tmp = (long)f;
+
+	return tmp;
+}
+#endif
+
 #endif
 
 /*
