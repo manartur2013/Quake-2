@@ -256,7 +256,6 @@ void AppActivate(BOOL fActive, BOOL minimize)
 	{
 		IN_Activate (false);
 		S_Activate (false);
-		QAL_Activate (false);
 
 		if ( win_noalttab->value )
 		{
@@ -267,7 +266,6 @@ void AppActivate(BOOL fActive, BOOL minimize)
 	{
 		IN_Activate (true);
 		S_Activate (true);
-		QAL_Activate (true);
 		if ( win_noalttab->value )
 		{
 			WIN_DisableAltTab();

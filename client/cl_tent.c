@@ -81,20 +81,20 @@ void CL_BFGExplosionParticles (vec3_t org);
 // RAFAEL
 void CL_BlueBlasterParticles (vec3_t org, vec3_t dir);
 
-struct sfx_s	*cl_sfx_ric1;
-struct sfx_s	*cl_sfx_ric2;
-struct sfx_s	*cl_sfx_ric3;
-struct sfx_s	*cl_sfx_lashit;
-struct sfx_s	*cl_sfx_spark5;
-struct sfx_s	*cl_sfx_spark6;
-struct sfx_s	*cl_sfx_spark7;
-struct sfx_s	*cl_sfx_railg;
-struct sfx_s	*cl_sfx_rockexp;
-struct sfx_s	*cl_sfx_grenexp;
-struct sfx_s	*cl_sfx_watrexp;
+char	*cl_sfx_ric1;
+char	*cl_sfx_ric2;
+char	*cl_sfx_ric3;
+char	*cl_sfx_lashit;
+char	*cl_sfx_spark5;
+char	*cl_sfx_spark6;
+char	*cl_sfx_spark7;
+char	*cl_sfx_railg;
+char	*cl_sfx_rockexp;
+char	*cl_sfx_grenexp;
+char	*cl_sfx_watrexp;
 // RAFAEL
-struct sfx_s	*cl_sfx_plasexp;
-struct sfx_s	*cl_sfx_footsteps[4];
+char	*cl_sfx_plasexp;
+char	*cl_sfx_footsteps[4];
 
 struct model_s	*cl_mod_explode;
 struct model_s	*cl_mod_smoke;
@@ -109,8 +109,8 @@ struct model_s	*cl_mod_powerscreen;
 struct model_s	*cl_mod_plasmaexplo;
 
 //ROGUE
-struct sfx_s	*cl_sfx_lightning;
-struct sfx_s	*cl_sfx_disrexp;
+char	*cl_sfx_lightning;
+char	*cl_sfx_disrexp;
 struct model_s	*cl_mod_lightning;
 struct model_s	*cl_mod_heatbeam;
 struct model_s	*cl_mod_monster_heatbeam;
@@ -130,33 +130,26 @@ void CL_RegisterTEntSounds (void)
 	// PMM - version stuff
 //	Com_Printf ("%s\n", ROGUE_VERSION_STRING);
 	// PMM
-	cl_sfx_ric1 = S_RegisterSound ("world/ric1.wav");
-	cl_sfx_ric2 = S_RegisterSound ("world/ric2.wav");
-	cl_sfx_ric3 = S_RegisterSound ("world/ric3.wav");
-	cl_sfx_lashit = S_RegisterSound("weapons/lashit.wav");
-	cl_sfx_spark5 = S_RegisterSound ("world/spark5.wav");
-	cl_sfx_spark6 = S_RegisterSound ("world/spark6.wav");
-	cl_sfx_spark7 = S_RegisterSound ("world/spark7.wav");
-	cl_sfx_railg = S_RegisterSound ("weapons/railgf1a.wav");
-	cl_sfx_rockexp = S_RegisterSound ("weapons/rocklx1a.wav");
-	cl_sfx_grenexp = S_RegisterSound ("weapons/grenlx1a.wav");
-	cl_sfx_watrexp = S_RegisterSound ("weapons/xpld_wat.wav");
-	// RAFAEL
-	// cl_sfx_plasexp = S_RegisterSound ("weapons/plasexpl.wav");
-	S_RegisterSound ("player/land1.wav");
+	cl_sfx_ric1 = "world/ric1.wav";
+	cl_sfx_ric2 = "world/ric2.wav";
+	cl_sfx_ric3 = "world/ric3.wav";
+	cl_sfx_lashit = "weapons/lashit.wav";
+	cl_sfx_spark5 = "world/spark5.wav";
+	cl_sfx_spark6 = "world/spark6.wav";
+	cl_sfx_spark7 = "world/spark7.wav";
+	cl_sfx_railg = "weapons/railgf1a.wav";
+	cl_sfx_rockexp = "weapons/rocklx1a.wav";
+	cl_sfx_grenexp = "weapons/grenlx1a.wav";
+	cl_sfx_watrexp = "weapons/xpld_wat.wav";
 
-	S_RegisterSound ("player/fall2.wav");
-	S_RegisterSound ("player/fall1.wav");
-
-	for (i=0 ; i<4 ; i++)
-	{
-		Com_sprintf (name, sizeof(name), "player/step%i.wav", i+1);
-		cl_sfx_footsteps[i] = S_RegisterSound (name);
-	}
+	cl_sfx_footsteps[0] = "player/step1.wav";
+	cl_sfx_footsteps[1] = "player/step2.wav";
+	cl_sfx_footsteps[2] = "player/step3.wav";
+	cl_sfx_footsteps[3] = "player/step4.wav";
 
 //PGM
-	cl_sfx_lightning = S_RegisterSound ("weapons/tesla.wav");
-	cl_sfx_disrexp = S_RegisterSound ("weapons/disrupthit.wav");
+	cl_sfx_lightning = "weapons/tesla.wav";
+	cl_sfx_disrexp = "weapons/disrupthit.wav";
 	// version stuff
 	sprintf (name, "weapons/sound%d.wav", ROGUE_VERSION_ID);
 	if (name[0] == 'w')

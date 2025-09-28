@@ -28,14 +28,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdlib.h>
 
 #include "ref.h"
+#include "media.h"
 
 #include "vid.h"
 #include "screen.h"
-#include "sound.h"
 #include "input.h"
 #include "keys.h"
 #include "console.h"
-#include "../qal/q_al.h"
+#include "sound.h"
 
 //=============================================================================
 
@@ -162,7 +162,7 @@ typedef struct
 	struct model_s	*model_draw[MAX_MODELS];
 	struct cmodel_s	*model_clip[MAX_MODELS];
 
-	struct sfx_s	*sound_precache[MAX_SOUNDS];
+	char			*sound_precache[MAX_SOUNDS];
 	struct image_s	*image_precache[MAX_IMAGES];
 
 	clientinfo_t	clientinfo[MAX_CLIENTS];
@@ -451,6 +451,7 @@ void CL_ParseLayout (void);
 // cl_main
 //
 extern	refexport_t	re;		// interface to refresh .dll
+extern	mexport_t me;
 
 void CL_Init (void);
 

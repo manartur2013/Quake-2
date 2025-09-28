@@ -177,7 +177,6 @@ void CL_RegisterSounds (void)
 {
 	int		i;
 
-	S_BeginRegistration ();
 	CL_RegisterTEntSounds ();
 	for (i=1 ; i<MAX_SOUNDS ; i++)
 	{
@@ -186,7 +185,6 @@ void CL_RegisterSounds (void)
 		cl.sound_precache[i] = S_RegisterSound (cl.configstrings[CS_SOUNDS+i]);
 		Sys_SendKeyEvents ();	// pump message loop
 	}
-	S_EndRegistration ();
 }
 
 

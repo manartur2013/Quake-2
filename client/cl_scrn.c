@@ -193,7 +193,7 @@ Called for important messages that should stay in the center of the screen
 for a few moments
 ==============
 */
-void SCR_CenterPrint (char *str)
+void SCR_CenterPrint2 (char *str, qboolean echo)
 {
 	char	*s;
 	char	line[64];
@@ -214,7 +214,8 @@ void SCR_CenterPrint (char *str)
 	}
 
 	// echo it to the console
-	Com_Printf("\n\n\35\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\37\n\n");
+	if (echo)
+		Com_Printf("\n\n\35\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\37\n\n");
 
 	s = str;
 	do	
@@ -234,7 +235,8 @@ void SCR_CenterPrint (char *str)
 		line[i] = '\n';
 		line[i+1] = 0;
 
-		Com_Printf ("%s", line);
+		if (echo)
+			Com_Printf ("%s", line);
 
 		while (*s && *s != '\n')
 			s++;
@@ -243,8 +245,22 @@ void SCR_CenterPrint (char *str)
 			break;
 		s++;		// skip the \n
 	} while (1);
-	Com_Printf("\n\n\35\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\37\n\n");
-	Con_ClearNotify ();
+	
+	if (echo)
+	{
+		Com_Printf("\n\n\35\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\36\37\n\n");
+		Con_ClearNotify();
+	}
+}
+
+void SCR_CenterPrint(char* str)
+{
+	SCR_CenterPrint2(str, true);
+}
+
+void SCR_CenterPrintNoEcho(char* str)
+{
+	SCR_CenterPrint2(str, false);
 }
 
 

@@ -1739,8 +1739,6 @@ void CL_Frame (int msec)
 	// update audio
 	S_Update (cl.refdef.vieworg, cl.v_forward, cl.v_right, cl.v_up);
 
-	QAL_Update();
-
 	// advance local effects for next frame
 	CL_RunDLights ();
 	CL_RunLightStyles ();
@@ -1791,6 +1789,7 @@ void CL_Init (void)
 	S_Init ();	
 	VID_Init ();
 #else
+	MED_Init();
 	VID_Init ();
 	S_Init ();	// sound must be initialized after window is created
 #endif
@@ -1805,12 +1804,8 @@ void CL_Init (void)
 	SCR_Init ();
 	cls.disable_screen = true;	// don't draw yet
 
-	QAL_Init ();
 	CL_InitLocal ();
 	IN_Init ();
-
-	if (qal_state.qal_init)
-		Cmd_AddCommand("cd", PlayTrack_f);
 
 //	Cbuf_AddText ("exec autoexec.cfg\n");
 	FS_ExecAutoexec ();
@@ -1840,7 +1835,6 @@ void CL_Shutdown(void)
 
 	CL_WriteConfiguration (); 
 
-	QAL_Shutdown();
 	S_Shutdown();
 	IN_Shutdown ();
 	VID_Shutdown();
