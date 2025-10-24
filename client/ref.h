@@ -180,6 +180,7 @@ typedef struct
 	void	(*EndFrame) (void);
 
 	void	(*AppActivate)( qboolean activate );
+	byte	*(*GetScrBitmap) (void);
 
 } refexport_t;
 

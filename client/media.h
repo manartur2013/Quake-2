@@ -1,5 +1,11 @@
 typedef struct
 {
+	byte *buffer;
+	size_t size;
+} compressed_image_t;
+
+typedef struct
+{
 	int		(*Init)	(void);
 
 	void	(*S_PlayTrack) (int track, qboolean looping);
@@ -13,6 +19,9 @@ typedef struct
 
 	void	(*QAL_Activate) (qboolean active);
 	void	(*QAL_Update) (float* pos, float* forward, float* up);
+
+	void*	(*MED_BitmapToPNG) (byte* bitmap, int width, int height);
+	void*	(*MED_BitmapToJPEG) (byte* bitmap, int width, int height);
 } mexport_t;
 
 typedef struct
@@ -51,7 +60,6 @@ typedef struct
 	qboolean sound_init;
 } mstate_t;
 
-extern mimport_t mi;
 extern mstate_t media_state;
 
 typedef mexport_t (*GetMAPI_t) (mimport_t);

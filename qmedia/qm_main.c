@@ -32,5 +32,8 @@ mexport_t GetMAPI(mimport_t qmimp)
 	me.QAL_Activate = QAL_Activate;
 	me.QAL_Update = QAL_Update;
 
+	me.MED_BitmapToPNG = QM_BitmapToPNG;
+	me.MED_BitmapToJPEG = QM_BitmapToJPEG;
+
 	return me;
 }

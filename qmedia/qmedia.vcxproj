@@ -28,6 +28,7 @@
     <ClCompile Include="..\qal\qal_music.c" />
     <ClCompile Include="..\qal\qal_sound.c" />
     <ClCompile Include="qm_main.c" />
+    <ClCompile Include="qm_misc.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -82,8 +83,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>..\..\vcpkg\packages\libsndfile_x64-windows-static\lib;..\..\vcpkg\packages\opus_x64-windows-static\lib;..\..\vcpkg\packages\libogg_x64-windows-static\lib;..\..\vcpkg\packages\libvorbis_x64-windows-static\lib;..\..\vcpkg\packages\libflac_x64-windows-static\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\..\vcpkg\packages\libsndfile_x64-windows-static\include;..\..\openal-soft\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\vcpkg\packages\libsndfile_x64-windows-static\lib;..\..\vcpkg\packages\opus_x64-windows-static\lib;..\..\vcpkg\packages\libogg_x64-windows-static\lib;..\..\vcpkg\packages\libvorbis_x64-windows-static\lib;..\..\vcpkg\packages\libflac_x64-windows-static\lib;..\..\vcpkg\packages\libpng_x64-windows-static\lib;..\..\vcpkg\packages\zlib_x64-windows-static\lib;..\..\vcpkg\packages\libjpeg-turbo_x64-windows-static\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\vcpkg\packages\libsndfile_x64-windows-static\include;..\..\openal-soft\include;..\..\vcpkg\packages\libpng_x64-windows-static\include;..\..\vcpkg\packages\zlib_x64-windows-static\include;..\..\vcpkg\packages\libjpeg-turbo_x64-windows-static\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -135,7 +136,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>qmedia.def</ModuleDefinitionFile>
-      <AdditionalDependencies>openal32.lib;sndfile.lib;FLAC.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;opus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openal32.lib;sndfile.lib;FLAC.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;opus.lib;libpng16.lib;zlib.lib;turbojpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

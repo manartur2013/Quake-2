@@ -346,6 +346,8 @@ void	GL_FreeUnusedImages (void);
 void GL_TextureAlphaMode( char *string );
 void GL_TextureSolidMode( char *string );
 
+byte *GL_Bitmap(void);
+
 /*
 ** GL extension emulation functions
 */

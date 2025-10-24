@@ -83,81 +83,36 @@ void R_InitParticleTexture (void)
 ============================================================================== 
 */ 
 
-typedef struct _TargaHeader {
-	unsigned char 	id_length, colormap_type, image_type;
-	unsigned short	colormap_index, colormap_length;
-	unsigned char	colormap_size;
-	unsigned short	x_origin, y_origin, width, height;
-	unsigned char	pixel_size, attributes;
-} TargaHeader;
-
-
-/* 
-================== 
-GL_ScreenShot_f
-================== 
-*/  
-void GL_ScreenShot_f (void) 
+byte *GL_Bitmap(void)
 {
-	byte		*buffer;
-	char		picname[80]; 
-	char		checkname[MAX_OSPATH];
-	int			i, c, temp;
-	FILE		*f;
+	byte* buffer;
+	size_t length;
 
-	// create the scrnshots directory if it doesn't exist
-	Com_sprintf (checkname, sizeof(checkname), "%s/scrnshot", ri.FS_Gamedir());
-	Sys_Mkdir (checkname);
+	length = vid.width * vid.height * 3;
+	buffer = malloc(length);
 
-// 
-// find a file name to save it to 
-// 
-	strcpy(picname,"quake00.tga");
-
-	for (i=0 ; i<=99 ; i++) 
-	{ 
-		picname[5] = i/10 + '0'; 
-		picname[6] = i%10 + '0'; 
-		Com_sprintf (checkname, sizeof(checkname), "%s/scrnshot/%s", ri.FS_Gamedir(), picname);
-		f = fopen (checkname, "rb");
-		if (!f)
-			break;	// file doesn't exist
-		fclose (f);
-	} 
-	if (i==100) 
+	qglReadPixels(0, 0, vid.width, vid.height, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+	
+	//FIXME: do not perform any transformations here, do it entirely on media module
+	
+	// flip the array
+	for (int i = 0; i < length / 2; i++)
 	{
-		ri.Con_Printf (PRINT_ALL, "SCR_ScreenShot_f: Couldn't create a file\n"); 
-		return;
- 	}
-
-
-	buffer = malloc(vid.width*vid.height*3 + 18);
-	memset (buffer, 0, 18);
-	buffer[2] = 2;		// uncompressed type
-	buffer[12] = vid.width&255;
-	buffer[13] = vid.width>>8;
-	buffer[14] = vid.height&255;
-	buffer[15] = vid.height>>8;
-	buffer[16] = 24;	// pixel size
-
-	qglReadPixels (0, 0, vid.width, vid.height, GL_RGB, GL_UNSIGNED_BYTE, buffer+18 ); 
-
-	// swap rgb to bgr
-	c = 18+vid.width*vid.height*3;
-	for (i=18 ; i<c ; i+=3)
-	{
-		temp = buffer[i];
-		buffer[i] = buffer[i+2];
-		buffer[i+2] = temp;
+		unsigned char temp = buffer[i];
+		buffer[i] = buffer[length - 1 - i];
+		buffer[length - 1 - i] = temp;
 	}
 
-	f = fopen (checkname, "wb");
-	fwrite (buffer, 1, c, f);
-	fclose (f);
+	// swap rgb to bgr
+	for (int i = 0; i < length; i+=3)
+	{
+		unsigned char temp = buffer[i];
+		buffer[i] = buffer[i + 2];
+		buffer[i + 2] = temp;
+	}
 
-	free (buffer);
-	ri.Con_Printf (PRINT_ALL, "Wrote %s\n", picname);
-} 
+	return buffer;
+}
 
 /*
 ** GL_Strings_f

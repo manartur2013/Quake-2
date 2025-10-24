@@ -414,6 +414,97 @@ void SCR_Sky_f (void)
 	re.SetSky (Cmd_Argv(1), rotate, axis);
 }
 
+#define MAX_SCREENSHOTS		1000
+#define SCREENSHOTS_DIR		"screenshots"
+
+void SCR_Screenshot_f(void)
+{
+	byte *bitmap;
+	char picname[MAX_QPATH], path[MAX_QPATH*2], picnum[5], format[4];
+	int i, width, height;
+	compressed_image_t *compressed = NULL;
+	void *(*compressfunc) (byte * bitmap, int width, int height);
+	FILE *f;
+
+	// FIXME: does this really guarantee that vidref is loaded?
+	if (!scr_initialized)
+		return;
+	
+	// decide on format
+	if (!strcmp("png", Cmd_Argv(1)))
+	{
+		strcpy(format, "png");
+		compressfunc = me.MED_BitmapToPNG;
+	}
+	else
+	{
+		strcpy(format, "jpg");
+		compressfunc = me.MED_BitmapToJPEG;	// default to jpeg
+	}
+
+	// make a directory
+	Com_sprintf(path, sizeof(path), "%s/%s", FS_Gamedir(), SCREENSHOTS_DIR);
+	Sys_Mkdir(path);
+
+	width = viddef.width;
+	height = viddef.height;
+
+	// decide on name
+	if (!cl.configstrings[CS_MODELS + 1][0])
+		strcpy(picname, "Snapshot");	// no map loaded
+	else
+	{
+		strcpy(picname, cl.configstrings[CS_MODELS + 1] + 5);
+		picname[strlen(picname) - 4] = 0;	// map is loaded: copy mapname, cut extension and foldername
+	}
+
+	memset(picnum, 0, sizeof(picnum));
+
+	for (i = 0; i <= MAX_SCREENSHOTS; i++)
+	{
+		picnum[0] = i / 1000 + '0';
+		picnum[1] = i / 100 + '0';
+		picnum[2] = i / 10 + '0';
+		picnum[3] = i % 10 + '0';
+
+		Com_sprintf(path, sizeof(path), "%s/%s/%s%s.%s", FS_Gamedir(), SCREENSHOTS_DIR, picname, picnum, format);
+		f = fopen(path, "rb");
+		
+		if (!f)
+			break;
+
+		fclose(f);
+	}
+
+	if (i == MAX_SCREENSHOTS)
+	{
+		Com_Printf("Maximum screenshot count\n");
+		return;
+	}
+
+	bitmap = re.GetScrBitmap();
+
+	if (bitmap == NULL)
+		return;
+
+	if ( ( compressed = compressfunc(bitmap, width, height)) != NULL )
+	{
+		f = fopen(path, "wb");
+		if (f)
+		{
+			fwrite(compressed->buffer, 1, compressed->size, f);
+			fclose(f);
+
+			Com_Printf("Wrote %s%s.%s (%f KB)\n", picname, picnum, format, (float)compressed->size/1024);
+		}
+
+		free(compressed->buffer);
+		free(compressed);
+	}
+
+	free(bitmap);
+}
+
 //============================================================================
 
 /*
@@ -445,6 +536,7 @@ void SCR_Init (void)
 	Cmd_AddCommand ("sizeup",SCR_SizeUp_f);
 	Cmd_AddCommand ("sizedown",SCR_SizeDown_f);
 	Cmd_AddCommand ("sky",SCR_Sky_f);
+	Cmd_AddCommand ("screenshot",SCR_Screenshot_f);
 
 	scr_initialized = true;
 }

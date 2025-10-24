@@ -1037,7 +1037,6 @@ void R_Register( void )
 	vid_ref = ri.Cvar_Get( "vid_ref", "soft", CVAR_ARCHIVE );
 
 	ri.Cmd_AddCommand( "imagelist", GL_ImageList_f );
-	ri.Cmd_AddCommand( "screenshot", GL_ScreenShot_f );
 	ri.Cmd_AddCommand( "modellist", Mod_Modellist_f );
 	ri.Cmd_AddCommand( "gl_strings", GL_Strings_f );
 }
@@ -1348,7 +1347,6 @@ R_Shutdown
 void R_Shutdown (void)
 {	
 	ri.Cmd_RemoveCommand ("modellist");
-	ri.Cmd_RemoveCommand ("screenshot");
 	ri.Cmd_RemoveCommand ("imagelist");
 	ri.Cmd_RemoveCommand ("gl_strings");
 
@@ -1656,6 +1654,7 @@ refexport_t GetRefAPI (refimport_t rimp )
 	re.EndFrame = GLimp_EndFrame;
 
 	re.AppActivate = GLimp_AppActivate;
+	re.GetScrBitmap = GL_Bitmap;
 
 	Swap_Init ();
 
